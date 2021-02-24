@@ -1,0 +1,395 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id=")GgN5psmnOJLP{{R]ic:">width</variable>
+    <variable id="TdXsuISm:F8+.s1BX~o6">depth</variable>
+    <variable id="9+STd?RLHP7Bk#m!_7~L">_</variable>
+    <variable id="yVH9+BKzvAa86|M%(DVL">next_turn</variable>
+    <variable id="EK2uGT,|G{ZO~6GD$OcP">i</variable>
+  </variables>
+  <block type="procedures_defnoreturn" x="49" y="-170">
+    <field name="NAME">force_walk</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="controls_whileUntil">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_negate">
+            <value name="BOOL">
+              <block type="custom_code">
+                <field name="code">turtle.forward()</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="controls_if">
+            <value name="IF0">
+              <block type="logic_negate">
+                <value name="BOOL">
+                  <block type="custom_code">
+                    <field name="code">turtle.dig()</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set">
+                <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                <value name="VALUE">
+                  <block type="custom_code">
+                    <field name="code">turtle.attack()</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defnoreturn" x="421" y="-167">
+    <field name="NAME">dig_vertical</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="procedures_callnoreturn">
+        <mutation name="force_walk"></mutation>
+        <next>
+          <block type="variables_set">
+            <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+            <value name="VALUE">
+              <block type="custom_code">
+                <field name="code">turtle.digUp()</field>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set">
+                <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                <value name="VALUE">
+                  <block type="custom_code">
+                    <field name="code">turtle.digDown()</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defnoreturn" x="46" y="6">
+    <mutation>
+      <arg name="width" varid=")GgN5psmnOJLP{{R]ic:"></arg>
+      <arg name="depth" varid="TdXsuISm:F8+.s1BX~o6"></arg>
+    </mutation>
+    <field name="NAME">dig_area</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="math_change">
+        <field name="VAR" id="TdXsuISm:F8+.s1BX~o6">depth</field>
+        <value name="DELTA">
+          <shadow type="math_number">
+            <field name="NUM">-1</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="variables_set">
+            <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+            <value name="VALUE">
+              <block type="text">
+                <field name="TEXT">right</field>
+              </block>
+            </value>
+            <next>
+              <block type="controls_for">
+                <field name="VAR" id="EK2uGT,|G{ZO~6GD$OcP">i</field>
+                <value name="FROM">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                </value>
+                <value name="TO">
+                  <shadow type="math_number">
+                    <field name="NUM">0</field>
+                  </shadow>
+                  <block type="variables_get">
+                    <field name="VAR" id=")GgN5psmnOJLP{{R]ic:">width</field>
+                  </block>
+                </value>
+                <value name="BY">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                </value>
+                <statement name="DO">
+                  <block type="controls_repeat_ext">
+                    <value name="TIMES">
+                      <shadow type="math_number">
+                        <field name="NUM">4</field>
+                      </shadow>
+                      <block type="variables_get">
+                        <field name="VAR" id="TdXsuISm:F8+.s1BX~o6">depth</field>
+                      </block>
+                    </value>
+                    <statement name="DO">
+                      <block type="procedures_callnoreturn">
+                        <mutation name="dig_vertical"></mutation>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="controls_if">
+                        <comment pinned="false" h="80" w="160">turn turtle if it's not the last row</comment>
+                        <value name="IF0">
+                          <block type="logic_compare">
+                            <field name="OP">LT</field>
+                            <value name="A">
+                              <block type="variables_get">
+                                <field name="VAR" id="EK2uGT,|G{ZO~6GD$OcP">i</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="variables_get">
+                                <field name="VAR" id=")GgN5psmnOJLP{{R]ic:">width</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="variables_set">
+                            <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                            <value name="VALUE">
+                              <block type="logic_ternary">
+                                <value name="IF">
+                                  <block type="logic_compare">
+                                    <field name="OP">EQ</field>
+                                    <value name="A">
+                                      <block type="variables_get">
+                                        <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="text">
+                                        <field name="TEXT">left</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <value name="THEN">
+                                  <block type="custom_code">
+                                    <field name="code">turtle.turnLeft()</field>
+                                  </block>
+                                </value>
+                                <value name="ELSE">
+                                  <block type="custom_code">
+                                    <field name="code">turtle.turnRight()</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="procedures_callnoreturn">
+                                <mutation name="dig_vertical"></mutation>
+                                <next>
+                                  <block type="variables_set">
+                                    <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                                    <value name="VALUE">
+                                      <block type="logic_ternary">
+                                        <value name="IF">
+                                          <block type="logic_compare">
+                                            <field name="OP">EQ</field>
+                                            <value name="A">
+                                              <block type="variables_get">
+                                                <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="text">
+                                                <field name="TEXT">left</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="THEN">
+                                          <block type="custom_code">
+                                            <field name="code">turtle.turnLeft()</field>
+                                          </block>
+                                        </value>
+                                        <value name="ELSE">
+                                          <block type="custom_code">
+                                            <field name="code">turtle.turnRight()</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set">
+                                        <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+                                        <value name="VALUE">
+                                          <block type="logic_ternary">
+                                            <value name="IF">
+                                              <block type="logic_compare">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="variables_get">
+                                                    <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="text">
+                                                    <field name="TEXT">left</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="THEN">
+                                              <block type="text">
+                                                <field name="TEXT">right</field>
+                                              </block>
+                                            </value>
+                                            <value name="ELSE">
+                                              <block type="text">
+                                                <field name="TEXT">left</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_if">
+                    <value name="IF0">
+                      <block type="logic_compare">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get">
+                            <field name="VAR" id="yVH9+BKzvAa86|M%(DVL">next_turn</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="text">
+                            <field name="TEXT">right</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="controls_repeat_ext">
+                        <value name="TIMES">
+                          <shadow type="math_number">
+                            <field name="NUM">2</field>
+                          </shadow>
+                        </value>
+                        <statement name="DO">
+                          <block type="variables_set">
+                            <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                            <value name="VALUE">
+                              <block type="custom_code">
+                                <field name="code">turtle.turnRight()</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                        <next>
+                          <block type="controls_repeat_ext">
+                            <value name="TIMES">
+                              <shadow type="math_number">
+                                <field name="NUM">10</field>
+                              </shadow>
+                              <block type="variables_get">
+                                <field name="VAR" id="TdXsuISm:F8+.s1BX~o6">depth</field>
+                              </block>
+                            </value>
+                            <statement name="DO">
+                              <block type="procedures_callnoreturn">
+                                <mutation name="force_walk"></mutation>
+                              </block>
+                            </statement>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="variables_set">
+                        <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                        <value name="VALUE">
+                          <block type="custom_code">
+                            <field name="code">turtle.turnRight()</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="controls_repeat_ext">
+                            <value name="TIMES">
+                              <shadow type="math_number">
+                                <field name="NUM">10</field>
+                              </shadow>
+                              <block type="math_arithmetic">
+                                <field name="OP">MINUS</field>
+                                <value name="A">
+                                  <shadow type="math_number">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                  <block type="variables_get">
+                                    <field name="VAR" id=")GgN5psmnOJLP{{R]ic:">width</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <shadow type="math_number">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO">
+                              <block type="procedures_callnoreturn">
+                                <mutation name="force_walk"></mutation>
+                              </block>
+                            </statement>
+                            <next>
+                              <block type="variables_set">
+                                <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                                <value name="VALUE">
+                                  <block type="custom_code">
+                                    <field name="code">turtle.turnRight()</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_callnoreturn" x="45" y="958">
+    <mutation name="dig_area">
+      <arg name="width"></arg>
+      <arg name="depth"></arg>
+    </mutation>
+    <value name="ARG0">
+      <block type="math_number">
+        <field name="NUM">8</field>
+      </block>
+    </value>
+    <value name="ARG1">
+      <block type="math_number">
+        <field name="NUM">7</field>
+      </block>
+    </value>
+  </block>
+</xml>

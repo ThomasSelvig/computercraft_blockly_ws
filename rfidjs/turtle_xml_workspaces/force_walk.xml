@@ -1,0 +1,46 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="9+STd?RLHP7Bk#m!_7~L">_</variable>
+  </variables>
+  <block type="procedures_defnoreturn" x="212" y="88">
+    <field name="NAME">force_walk</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="controls_whileUntil">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_negate">
+            <value name="BOOL">
+              <block type="custom_code">
+                <field name="code">turtle.forward()</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="controls_if">
+            <value name="IF0">
+              <block type="logic_negate">
+                <value name="BOOL">
+                  <block type="custom_code">
+                    <field name="code">turtle.dig()</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set">
+                <field name="VAR" id="9+STd?RLHP7Bk#m!_7~L">_</field>
+                <value name="VALUE">
+                  <block type="custom_code">
+                    <field name="code">turtle.attack()</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>

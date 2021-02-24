@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>ÆÆÆ</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+		<!-- blockly scripts and languages -->
+		<script src="blockly_compressed.js"></script>
+		<script src="blocks_compressed.js"></script>
+		<script src="lua_compressed.js"></script>
+		<script src="msg/en.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid my-3">
+			<form action="/" method="post">
+
+				<div class="form-group">
+					<label>Turtle UUID</label>
+					<!-- <select class="form-control" id="t_available">
+						<option selected>Choose available turtles:</option>
+					</select> -->
+
+					<div id="turtles_checkboxes" class="mx-4">
+						
+					</div>
+
+					<!-- <input type="text" class="form-control" id="t_recipientId" placeholder="9d1953c7556840369ede0f3c11f6df81"> -->
+				</div>
+
+				<div class="form-group">
+					<label>Turtle code</label>
+					<!-- blockly container -->
+					<div class="container-fluid" id="blockly_area" style="height: 75vh;"></div>
+					<div id="blockly_div" style="position: absolute"></div>
+				</div>
+
+				<div class="form-row">
+					<div class="col">
+
+						<div class="form-group">
+							<label>Output</label>
+							<textarea rows=10 id="t_log" class="form-control" readonly></textarea>
+						</div>
+
+					</div>
+
+					<div class="col">
+
+						<div class="form-group">
+							<label>Turtle code</label>
+							<textarea readonly rows=10 id="t_code" class="form-control" placeholder="return 5 + 5"></textarea>
+						</div>
+						<span class="btn btn-primary btn-block" id="send_code">Send</span>
+
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="col">
+
+						<div class="form-group">
+							<label>Load from XML</label>
+							<textarea rows=10 id="workspace_xml_load" class="form-control"></textarea>
+						</div>
+						<span class="btn btn-info btn-block" id="workspace_load">Load</span>
+
+					</div>
+
+					<div class="col">
+
+						<div class="form-group">
+							<label>Workspace as XML</label>
+							<textarea readonly rows=10 id="workspace_xml_save" class="form-control"></textarea>
+						</div>
+
+					</div>
+				</div>
+
+			</form>
+
+
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		
+		<!-- <xml id="toolbox" style="display: none">
+			<block type="controls_if"></block>
+			<block type="controls_repeat_ext"></block>
+			<block type="logic_compare"></block>
+			<block type="math_number"></block>
+			<block type="math_arithmetic"></block>
+			<block type="text"></block>
+			<block type="text_print"></block>
+			<category name="Logic" categorystyle="logic_category"></category>
+			<category name="Colours" custom="COLOUR_PALETTE"></category>
+			<category name="Variables" colour="330" custom="VARIABLE"></category>
+			<category name="Functions" colour="290" custom="PROCEDURE"></category>
+		</xml> -->
+		
+
+		<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+			<category name="Logic" colour="%{BKY_LOGIC_HUE}">
+				<block type="controls_if"></block>
+				<block type="logic_compare"></block>
+				<block type="logic_operation"></block>
+				<block type="logic_negate"></block>
+				<block type="logic_boolean"></block>
+				<block type="logic_null"></block>
+				<block type="logic_ternary"></block>
+			</category>
+			<category name="Loops" colour="%{BKY_LOOPS_HUE}">
+				<block type="controls_repeat_ext">
+					<value name="TIMES">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="controls_whileUntil"></block>
+				<block type="controls_for">
+					<value name="FROM">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="TO">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+					<value name="BY">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="controls_forEach"></block>
+				<block type="controls_flow_statements"></block>
+			</category>
+			<category name="Math" colour="%{BKY_MATH_HUE}">
+				<block type="math_number">
+					<field name="NUM">123</field>
+				</block>
+				<block type="math_arithmetic">
+					<value name="A">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="B">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_single">
+					<value name="NUM">
+						<shadow type="math_number">
+							<field name="NUM">9</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_trig">
+					<value name="NUM">
+						<shadow type="math_number">
+							<field name="NUM">45</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_constant"></block>
+				<block type="math_number_property">
+					<value name="NUMBER_TO_CHECK">
+						<shadow type="math_number">
+							<field name="NUM">0</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_round">
+					<value name="NUM">
+						<shadow type="math_number">
+							<field name="NUM">3.1</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_on_list"></block>
+				<block type="math_modulo">
+					<value name="DIVIDEND">
+						<shadow type="math_number">
+							<field name="NUM">64</field>
+						</shadow>
+					</value>
+					<value name="DIVISOR">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_constrain">
+					<value name="VALUE">
+						<shadow type="math_number">
+							<field name="NUM">50</field>
+						</shadow>
+					</value>
+					<value name="LOW">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="HIGH">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_random_int">
+					<value name="FROM">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="TO">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_random_float"></block>
+				<block type="math_atan2">
+					<value name="X">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="Y">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
+			</category>
+			<category name="Text" colour="%{BKY_TEXTS_HUE}">
+				<block type="text"></block>
+				<block type="text_join"></block>
+				<block type="text_append">
+					<value name="TEXT">
+						<shadow type="text"></shadow>
+					</value>
+				</block>
+				<block type="text_length">
+					<value name="VALUE">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_isEmpty">
+					<value name="VALUE">
+						<shadow type="text">
+							<field name="TEXT"></field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_indexOf">
+					<value name="VALUE">
+						<block type="variables_get">
+							<field name="VAR">{textVariable}</field>
+						</block>
+					</value>
+					<value name="FIND">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_charAt">
+					<value name="VALUE">
+						<block type="variables_get">
+							<field name="VAR">{textVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="text_getSubstring">
+					<value name="STRING">
+						<block type="variables_get">
+							<field name="VAR">{textVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="text_changeCase">
+					<value name="TEXT">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_trim">
+					<value name="TEXT">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_print">
+					<value name="TEXT">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text_prompt_ext">
+					<value name="TEXT">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+			</category>
+			<category name="Lists" colour="%{BKY_LISTS_HUE}">
+				<block type="lists_create_with">
+					<mutation items="0"></mutation>
+				</block>
+				<block type="lists_create_with"></block>
+				<block type="lists_repeat">
+					<value name="NUM">
+						<shadow type="math_number">
+							<field name="NUM">5</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="lists_length"></block>
+				<block type="lists_isEmpty"></block>
+				<block type="lists_indexOf">
+					<value name="VALUE">
+						<block type="variables_get">
+							<field name="VAR">{listVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="lists_getIndex">
+					<value name="VALUE">
+						<block type="variables_get">
+							<field name="VAR">{listVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="lists_setIndex">
+					<value name="LIST">
+						<block type="variables_get">
+							<field name="VAR">{listVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="lists_getSublist">
+					<value name="LIST">
+						<block type="variables_get">
+							<field name="VAR">{listVariable}</field>
+						</block>
+					</value>
+				</block>
+				<block type="lists_split">
+					<value name="DELIM">
+						<shadow type="text">
+							<field name="TEXT">,</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="lists_sort"></block>
+			</category>
+			<category name="Colour" colour="%{BKY_COLOUR_HUE}">
+				<block type="colour_picker"></block>
+				<block type="colour_random"></block>
+				<block type="colour_rgb">
+					<value name="RED">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+					<value name="GREEN">
+						<shadow type="math_number">
+							<field name="NUM">50</field>
+						</shadow>
+					</value>
+					<value name="BLUE">
+						<shadow type="math_number">
+							<field name="NUM">0</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="colour_blend">
+					<value name="COLOUR1">
+						<shadow type="colour_picker">
+							<field name="COLOUR">#ff0000</field>
+						</shadow>
+					</value>
+					<value name="COLOUR2">
+						<shadow type="colour_picker">
+							<field name="COLOUR">#3333ff</field>
+						</shadow>
+					</value>
+					<value name="RATIO">
+						<shadow type="math_number">
+							<field name="NUM">0.5</field>
+						</shadow>
+					</value>
+				</block>
+			</category>
+			<sep></sep>
+			<category name="Variables" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+			<category name="Functions" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+		</xml>
+
+		<!-- blockly init script -->
+		<script>
+			var blocklyArea = document.getElementById('blockly_area');
+			var blocklyDiv = document.getElementById('blockly_div');
+
+			// define return block
+			Blockly.Blocks['return'] = {
+				init: function() {
+					this.appendValueInput("value")
+						.setCheck(null)
+						.appendField("return");
+					this.setPreviousStatement(true, null);
+					this.setColour(315);
+					this.setTooltip("Return value after remote execution");
+					this.setHelpUrl("");
+				}
+			};
+			// lua generator for return block
+			Blockly.Lua['return'] = function(block) {
+				var value_value = Blockly.Lua.valueToCode(block, 'value', Blockly.Lua.ORDER_ATOMIC);
+				return `return ${value_value}\n`
+				// return code;
+			};
+			
+
+			// define custom_code block
+			Blockly.Blocks['custom_code'] = {
+				init: function() {
+					this.appendDummyInput()
+					.appendField(new Blockly.FieldTextInput("code"), "code");
+					this.setOutput(true, null);
+					this.setColour(230);
+					this.setTooltip("");
+					this.setHelpUrl("");
+				}
+			};
+			// lua generator for custom_code block
+			Blockly.Lua['custom_code'] = function(block) {
+				var text_code = block.getFieldValue('code');
+				// TODO: Assemble Lua into code variable.
+				var code = text_code;
+				// TODO: Change ORDER_NONE to the correct strength.
+				return [code, Blockly.Lua.ORDER_NONE];
+			};
+
+
+			$("#toolbox").append(`
+				<category name="ComputerCraft" colour="%{BKY_LOGIC_HUE}">
+					<block type="return"></block>
+					<block type="custom_code"></block>
+				</category>
+			`)
+
+
+			var workspace = Blockly.inject(blocklyDiv,
+				{toolbox: document.getElementById('toolbox')});
+			
+			var onresize = function(e) {
+				// Compute the absolute coordinates and dimensions of blocklyArea.
+				var element = blocklyArea;
+				var x = 0;
+				var y = 0;
+				do {
+					x += element.offsetLeft;
+					y += element.offsetTop;
+					element = element.offsetParent;
+				} while (element);
+				// Position blocklyDiv over blocklyArea.
+				blocklyDiv.style.left = x + 'px';
+				blocklyDiv.style.top = y + 'px';
+				blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+				blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+				Blockly.svgResize(workspace);
+			};
+			window.addEventListener('resize', onresize, false);
+			onresize();
+			Blockly.svgResize(workspace);
+		</script>
+
+		<script>
+			$(() => {
+				// DOM loaded
+
+				workspace.addChangeListener(e => {
+					$("#t_code").val(Blockly.Lua.workspaceToCode(workspace))
+					$("#workspace_xml_save").val(Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(workspace, true)))
+				})
+
+				$("#workspace_load").click(() => {
+					let xml = Blockly.Xml.textToDom($("#workspace_xml_load").val())
+					Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, workspace)
+				})
+
+				
+				const socket = new WebSocket(`ws://${location.host}:23085`)
+				
+				function send_lua() {
+					for (let selected_t of $(".t_cb:checkbox:checked")) {
+						socket.send(JSON.stringify(
+							{
+								recipient: selected_t.value,
+								msg: {
+									cmd: "exec",
+									data: $("#t_code").val()
+									// data: Blockly.Lua.workspaceToCode(workspace)
+								}
+							}
+						))
+					}
+					
+				}
+				$("#send_code").click(() => {
+					send_lua()
+				})
+				$(document).keypress(e => {
+					if (e.keyCode == 13) {
+						send_lua()
+					}
+				})
+
+				socket.addEventListener("message", event => {
+					console.log(event.data)
+					let msg_obj = JSON.parse(event.data)
+					
+					if (msg_obj.sender == "server") {
+						// fill #t_available with turtles from this list
+						
+						// $("#t_available").html(msg_obj.msg.map(i => 
+						// 	`<option>${i}</option>`
+						// ).join("\n"))
+
+						$("#turtles_checkboxes").html(msg_obj.msg.map(i => 
+							`
+							<div class="form-check">
+								<input class="form-check-input t_cb" type="checkbox" name="turtles_cb" id="t_${i}" value="${i}">
+								<label class="form-check-label" for="t_${i}">
+									${i}
+								</label>
+							</div>
+							`
+						).join("\n"))
+
+						onresize()
+					}
+					else {
+						$("#t_log").val(JSON.stringify(msg_obj, null, 4))
+					}
+				})
+
+				socket.addEventListener("open", event => {
+					socket.send(JSON.stringify({
+						recipient: "server",
+						msg: "ASK_TURTLE_LIST"
+					}))
+				})
+
+			})
+		</script>
+	</body>
+</html>
